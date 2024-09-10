@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-backend-app
+  template:
+    metadata:
+      labels:
+        app: my-backend-app
+    spec:
+      containers:
+      - name: backend-container
+        image: alamzia23/nodejs-blog:v1
+        ports:
+        - containerPort: 5000
+        env:
+        - name: MONGODB_URI
+          valueFrom:
+            secretKeyRef:
+              name: my-app-secrets
+              key: MONGODB_URI
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: my-app-secrets
+              key: JWT_SECRET
